@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Eco Turismo Experiencial</title>
+
+    <!-- LEAFLET MAP -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        html{
+            scroll-behavior:smooth;
+        }
+
+        body{
+            background:#f4f4f4;
+            color:#333;
+        }
+
+        header{
+            background:#2e8b57;
+            color:white;
+            text-align:center;
+            padding:25px;
+        }
+
+        nav{
+            background:#246b45;
+            padding:15px;
+            text-align:center;
+            position:sticky;
+            top:0;
+            z-index:1000;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            margin:0 15px;
+            font-weight:bold;
+        }
+
+        nav a:hover{
+            text-decoration:underline;
+        }
+
+        .hero{
+            background:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80');
+            background-size:cover;
+            background-position:center;
+            height:400px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            color:white;
+        }
+
+        .hero h1{
+            background:rgba(0,0,0,0.5);
+            padding:20px;
+            border-radius:10px;
+        }
+
+        .container{
+            width:90%;
+            margin:auto;
+            padding:40px 0;
+        }
+
+        .cards{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+        }
+
+        .card{
+            background:white;
+            border-radius:10px;
+            overflow:hidden;
+            box-shadow:0 2px 10px rgba(0,0,0,0.2);
+            transition:0.3s;
+        }
+
+        .card:hover{
+            transform:translateY(-5px);
+        }
+
+        .card img{
+            width:100%;
+            height:200px;
+            object-fit:cover;
+        }
+
+        .card-content{
+            padding:15px;
+        }
+
+        .card-content h3{
+            color:#2e8b57;
+            margin-bottom:10px;
+        }
+
+        .btn{
+            display:inline-block;
+            margin-top:10px;
+            background:#2e8b57;
+            color:white;
+            padding:10px 15px;
+            border-radius:5px;
+            text-decoration:none;
+            cursor:pointer;
+            border:none;
+        }
+
+        .btn:hover{
+            background:#246b45;
+        }
+
+        ul{
+            margin-left:20px;
+            line-height:2;
+        }
+
+        #map{
+            width:100%;
+            height:500px;
+            border-radius:10px;
+            margin-top:20px;
+        }
+
+        .actividad-info{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            margin-top:20px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        footer{
+            background:#222;
+            color:white;
+            text-align:center;
+            padding:20px;
+            margin-top:40px;
+        }
+
+        @media(max-width:768px){
+
+            nav a{
+                display:block;
+                margin:10px 0;
+            }
+
+            .hero{
+                height:300px;
+                padding:20px;
+            }
+
+            .hero h1{
+                font-size:25px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header id="inicio">
+        <h1>Eco Turismo Experiencial</h1>
+        <p>Conectando viajeros con experiencias auténticas y sostenibles</p>
+    </header>
+
+    <!-- MENU -->
+
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#alojamientos">Alojamientos</a>
+        <a href="#actividades">Actividades</a>
+        <a href="#mapa">Mapa</a>
+        <a href="#reservas">Reservas</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+
+    <!-- HERO -->
+
+    <section class="hero">
+        <h1>Descubre la naturaleza y vive experiencias inolvidables</h1>
+    </section>
+
+    <!-- SERVICIOS -->
+
+    <section class="container" id="alojamientos">
+
+        <h2>Servicios Disponibles</h2>
+        <br>
+
+        <div class="cards">
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80">
+                <div class="card-content">
+                    <h3>Hoteles Rurales</h3>
+                    <p>Hospedajes ecológicos y cómodos.</p>
+                    <button class="btn">Reservar</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80">
+                <div class="card-content">
+                    <h3>Ecoturismo</h3>
+                    <p>Senderismo, aventura y naturaleza.</p>
+                    <button class="btn">Explorar</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1600&q=80">
+                <div class="card-content">
+                    <h3>Pueblos Turísticos</h3>
+                    <p>Cultura y tradiciones regionales.</p>
+                    <button class="btn">Visitar</button>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ACTIVIDADES -->
+
+    <section class="container" id="actividades">
+
+        <h2>Actividades Turísticas</h2>
+        <br>
+
+        <div class="cards">
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=1600&q=80">
+                <div class="card-content">
+                    <h3>Senderismo</h3>
+                    <p>Rutas ecológicas y montañas.</p>
+                    <button class="btn" onclick="mostrarActividad(4.6097,-74.0817,'Senderismo en Bogotá')">
+                        Ver en mapa
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80">
+                <div class="card-content">
+                    <h3>Cascadas</h3>
+                    <p>Experiencias naturales únicas.</p>
+                    <button class="btn" onclick="mostrarActividad(4.7110,-74.0721,'Ruta de Cascadas')">
+                        Ver en mapa
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1600&q=80">
+                <div class="card-content">
+                    <h3>Camping</h3>
+                    <p>Aventura bajo las estrellas.</p>
+                    <button class="btn" onclick="mostrarActividad(4.6486,-74.2479,'Zona de Camping')">
+                        Ver en mapa
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- MAPA -->
+
+    <section class="container" id="mapa">
+
+        <h2>Mapa de Actividades</h2>
+
+        <div id="map"></div>
+
+        <div class="actividad-info" id="infoActividad">
+            <h3>Selecciona una actividad</h3>
+            <p>Haz clic en "Ver en mapa" para visualizar la ubicación.</p>
+        </div>
+
+    </section>
+
+    <!-- FUNCIONES -->
+
+    <section class="container" id="reservas">
+
+        <h2>Funcionalidades del Sistema</h2>
+        <br>
+
+        <ul>
+            <li>✔ Registro de turistas y anfitriones</li>
+            <li>✔ Gestión de alojamientos y actividades</li>
+            <li>✔ Reservas online</li>
+            <li>✔ Pagos electrónicos</li>
+            <li>✔ Calificaciones y reseñas</li>
+            <li>✔ Geolocalización de actividades</li>
+            <li>✔ Panel administrativo</li>
+        </ul>
+
+    </section>
+
+    <!-- CONTACTO -->
+
+    <section class="container" id="contacto">
+
+        <h2>Contacto</h2>
+        <br>
+
+        <p>Email: contacto@ecoturismo.com</p>
+        <p>Teléfono: +57 300 000 0000</p>
+        <p>Ubicación: Colombia</p>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+        <p>&copy; 2026 Eco Turismo Experiencial</p>
+    </footer>
+
+    <!-- LEAFLET JS -->
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+
+        // INICIALIZAR MAPA
+
+        const map = L.map('map').setView([4.6097, -74.0817], 10);
+
+        // MAPA OPENSTREETMAP
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution:'© OpenStreetMap'
+        }).addTo(map);
+
+        // VARIABLE MARCADOR
+
+        let marcador;
+
+        // FUNCION MOSTRAR ACTIVIDAD
+
+        function mostrarActividad(lat, lng, nombre){
+
+            // ELIMINAR MARCADOR ANTERIOR
+
+            if(marcador){
+                map.removeLayer(marcador);
+            }
+
+            // CREAR NUEVO MARCADOR
+
+            marcador = L.marker([lat, lng]).addTo(map)
+                .bindPopup(nombre)
+                .openPopup();
+
+            // MOVER MAPA
+
+            map.setView([lat, lng], 13);
+
+            // MOSTRAR INFORMACION
+
+            document.getElementById("infoActividad").innerHTML = `
+                <h3>${nombre}</h3>
+                <p>Ubicación cargada correctamente en el mapa.</p>
+            `;
+        }
+
+    </script>
+
+</body>
+</html>

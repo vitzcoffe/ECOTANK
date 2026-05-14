@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Eco Turismo - Login & Registro</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    height:100vh;
+
+    background:
+    linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),
+    url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80');
+
+    background-size:cover;
+    background-position:center;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:1000px;
+    max-width:100%;
+    min-height:620px;
+
+    background:rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    box-shadow:0 15px 40px rgba(0,0,0,0.45);
+}
+
+/* PANEL IZQUIERDO */
+
+.left-panel{
+    width:50%;
+    background:linear-gradient(135deg,#2e8b57,#1e5d3a);
+
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    padding:50px;
+    text-align:center;
+}
+
+.logo{
+    font-size:85px;
+    margin-bottom:25px;
+}
+
+.left-panel h1{
+    font-size:45px;
+    margin-bottom:20px;
+}
+
+.left-panel p{
+    font-size:18px;
+    line-height:1.8;
+}
+
+.sql-info{
+    margin-top:35px;
+    padding:20px;
+    border-radius:15px;
+    background:rgba(255,255,255,0.12);
+    width:100%;
+    text-align:left;
+    line-height:1.8;
+}
+
+/* PANEL DERECHO */
+
+.right-panel{
+    width:50%;
+    background:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:40px 0;
+}
+
+.form-container{
+    width:85%;
+}
+
+.form-box{
+    display:none;
+}
+
+.form-box.active{
+    display:block;
+}
+
+.form-box h2{
+    text-align:center;
+    margin-bottom:30px;
+    color:#2e8b57;
+    font-size:34px;
+}
+
+/* BOTONES DE ROLES */
+
+.roles-container{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.role-btn{
+    border:2px solid #d9d9d9;
+    background:white;
+    border-radius:16px;
+    padding:18px 10px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    gap:10px;
+}
+
+.role-btn i{
+    font-size:30px;
+    color:#2e8b57;
+}
+
+.role-btn span{
+    font-size:15px;
+    font-weight:bold;
+    color:#333;
+}
+
+.role-btn:hover{
+    transform:translateY(-4px);
+    border-color:#2e8b57;
+    box-shadow:0 8px 20px rgba(46,139,87,0.2);
+}
+
+.role-btn.active{
+    background:#2e8b57;
+    border-color:#2e8b57;
+}
+
+.role-btn.active i,
+.role-btn.active span{
+    color:white;
+}
+
+/* INPUTS */
+
+.input-group{
+    margin-bottom:18px;
+    position:relative;
+}
+
+.input-group input{
+    width:100%;
+    padding:15px 18px 15px 50px;
+
+    border:none;
+    outline:none;
+
+    border-radius:12px;
+
+    background:#f1f1f1;
+
+    font-size:16px;
+}
+
+.input-group i{
+    position:absolute;
+    left:18px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#2e8b57;
+}
+
+/* BOTÓN */
+
+.btn{
+    width:100%;
+    padding:15px;
+
+    border:none;
+    border-radius:12px;
+
+    background:#2e8b57;
+    color:white;
+
+    font-size:17px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#1f6b45;
+}
+
+/* SWITCH */
+
+.switch-text{
+    margin-top:20px;
+    text-align:center;
+    color:#555;
+}
+
+.switch-text span{
+    color:#2e8b57;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:950px){
+
+    .container{
+        flex-direction:column;
+    }
+
+    .left-panel,
+    .right-panel{
+        width:100%;
+    }
+
+    .left-panel{
+        padding:40px 30px;
+    }
+
+}
+
+@media(max-width:500px){
+
+    .roles-container{
+        grid-template-columns:1fr;
+    }
+
+    .form-box h2{
+        font-size:28px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- PANEL IZQUIERDO -->
+
+    <div class="left-panel">
+
+        <i class="fa-solid fa-mountain-sun logo"></i>
+
+        <h1>Eco Turismo</h1>
+
+        <p>
+            Plataforma inteligente para turismo ecológico,
+            reservas sostenibles y experiencias conectadas
+            con geolocalización.
+        </p>
+
+        <div class="sql-info">
+
+            <strong>Backend SQL Server</strong>
+
+            <br><br>
+
+            ✔ Gestión de usuarios<br>
+            ✔ Reservas ecológicas<br>
+            ✔ Actividades turísticas<br>
+            ✔ Panel administrativo<br>
+            ✔ Negocios locales<br>
+            ✔ Roles inteligentes
+
+        </div>
+
+    </div>
+
+    <!-- PANEL DERECHO -->
+
+    <div class="right-panel">
+
+        <div class="form-container">
+
+            <!-- LOGIN -->
+
+            <div class="form-box active" id="loginForm">
+
+                <h2>Iniciar Sesión</h2>
+
+                <!-- ROLES -->
+
+                <div class="roles-container">
+
+                    <button class="role-btn active" onclick="seleccionarRol(this,'Turista')">
+                        <i class="fa-solid fa-camera-retro"></i>
+                        <span>Turista</span>
+                    </button>
+
+                    <button class="role-btn" onclick="seleccionarRol(this,'Anfitrión')">
+                        <i class="fa-solid fa-house-chimney-user"></i>
+                        <span>Anfitrión</span>
+                    </button>
+
+                    <button class="role-btn" onclick="seleccionarRol(this,'Administrador')">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>Administrador</span>
+                    </button>
+
+                    <button class="role-btn" onclick="seleccionarRol(this,'Negocios Locales')">
+                        <i class="fa-solid fa-store"></i>
+                        <span>Negocios</span>
+                    </button>
+
+                </div>
+
+                <form>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email"
+                        placeholder="Correo electrónico"
+                        required>
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password"
+                        placeholder="Contraseña"
+                        required>
+                    </div>
+
+                    <button class="btn">
+                        Entrar
+                    </button>
+
+                </form>
+
+                <div class="switch-text">
+                    ¿No tienes cuenta?
+                    <span onclick="mostrarRegistro()">
+                        Regístrate
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- REGISTRO -->
+
+            <div class="form-box" id="registerForm">
+
+                <h2>Crear Cuenta</h2>
+
+                <!-- ROLES -->
+
+                <div class="roles-container">
+
+                    <button class="role-btn active" onclick="seleccionarRol(this,'Turista')">
+                        <i class="fa-solid fa-camera-retro"></i>
+                        <span>Turista</span>
+                    </button>
+
+                    <button class="role-btn" onclick="seleccionarRol(this,'Anfitrión')">
+                        <i class="fa-solid fa-house-chimney-user"></i>
+                        <span>Anfitrión</span>
+                    </button>
+
+                    <button class="role-btn" onclick="seleccionarRol(this,'Administrador')">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>Administrador</span>
+                    </button>
+
+                    <button class="role-btn" onclick="seleccionarRol(this,'Negocios Locales')">
+                        <i class="fa-solid fa-store"></i>
+                        <span>Negocios</span>
+                    </button>
+
+                </div>
+
+                <form>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text"
+                        placeholder="Nombre completo"
+                        required>
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email"
+                        placeholder="Correo electrónico"
+                        required>
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="text"
+                        placeholder="Teléfono"
+                        required>
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password"
+                        placeholder="Contraseña"
+                        required>
+                    </div>
+
+                    <button class="btn">
+                        Registrarse
+                    </button>
+
+                </form>
+
+                <div class="switch-text">
+                    ¿Ya tienes cuenta?
+                    <span onclick="mostrarLogin()">
+                        Iniciar sesión
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* CAMBIO LOGIN / REGISTRO */
+
+function mostrarRegistro(){
+
+    document.getElementById("loginForm")
+    .classList.remove("active");
+
+    document.getElementById("registerForm")
+    .classList.add("active");
+}
+
+function mostrarLogin(){
+
+    document.getElementById("registerForm")
+    .classList.remove("active");
+
+    document.getElementById("loginForm")
+    .classList.add("active");
+}
+
+/* SELECCIÓN DE ROLES */
+
+function seleccionarRol(btn, rol){
+
+    let container = btn.parentElement;
+
+    let botones = container.querySelectorAll(".role-btn");
+
+    botones.forEach(b=>{
+        b.classList.remove("active");
+    });
+
+    btn.classList.add("active");
+
+    console.log("Rol seleccionado:", rol);
+}
+
+</script>
+
+</body>
+</html>
