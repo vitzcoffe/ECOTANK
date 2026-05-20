@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using ECOTANK.Data;
+using Microsoft.Extensions.Logging;
 
 namespace ECOTANK
 {
@@ -14,6 +15,9 @@ namespace ECOTANK
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            // Acceso a MySQL (singleton, inyectable en páginas/servicios).
+            builder.Services.AddSingleton<DatabaseService>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

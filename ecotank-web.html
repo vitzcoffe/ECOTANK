@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECOTANK | Prueba Web</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        linear-gradient(rgba(18, 44, 31, 0.72), rgba(18, 44, 31, 0.72)),
+        url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80");
+      background-position: center;
+      background-size: cover;
+      color: #173326;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    main {
+      width: min(980px, 100%);
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    aside {
+      background: #226946;
+      color: #ffffff;
+      padding: 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    aside h1 {
+      margin: 0;
+      font-size: 42px;
+      letter-spacing: 0;
+    }
+
+    aside p {
+      margin: 0;
+      line-height: 1.6;
+      color: #e8f4ec;
+    }
+
+    section {
+      padding: 36px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 24px;
+      background: #edf3ef;
+      padding: 6px;
+      border-radius: 10px;
+    }
+
+    .tab {
+      border: 0;
+      border-radius: 8px;
+      padding: 12px;
+      background: transparent;
+      color: #226946;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: #226946;
+      color: #ffffff;
+    }
+
+    form {
+      display: none;
+      gap: 14px;
+    }
+
+    form.active {
+      display: grid;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid #c9d8cf;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 16px;
+    }
+
+    button[type="submit"],
+    .health {
+      border: 0;
+      border-radius: 8px;
+      padding: 13px 16px;
+      background: #226946;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .health {
+      background: #173326;
+      margin-top: 10px;
+    }
+
+    .status {
+      min-height: 48px;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 8px;
+      background: #edf3ef;
+      color: #226946;
+      line-height: 1.45;
+    }
+
+    .status.error {
+      background: #fff1f0;
+      color: #b42318;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      aside,
+      section {
+        padding: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <aside>
+      <h1>ECOTANK</h1>
+      <p>Prueba web directa contra MySQL usando una API local segura.</p>
+      <p>Servidor local: <strong>localhost</strong><br>Base: <strong>ecotank</strong></p>
+    </aside>
+
+    <section>
+      <div class="tabs" role="tablist" aria-label="Flujo de acceso">
+        <button class="tab active" id="registerTab" type="button">Registro</button>
+        <button class="tab" id="loginTab" type="button">Login</button>
+      </div>
+
+      <form id="registerForm" class="active">
+        <label>
+          Nombre completo
+          <input id="registerFullName" type="text" required value="Usuario Web ECOTANK">
+        </label>
+
+        <label>
+          Correo
+          <input id="registerEmail" type="email" required value="web.ecotank@demo.local">
+        </label>
+
+        <label>
+          Telefono
+          <input id="registerPhone" type="text" value="3001234567">
+        </label>
+
+        <label>
+          Contrasena
+          <input id="registerPassword" type="password" required value="Prueba123" minlength="6">
+        </label>
+
+        <label>
+          Rol
+          <select id="registerRole">
+            <option>Turista</option>
+            <option>Anfitrion</option>
+            <option>Administrador</option>
+            <option>Negocio Local</option>
+          </select>
+        </label>
+
+        <button type="submit">Registrar en MySQL</button>
+      </form>
+
+      <form id="loginForm">
+        <label>
+          Correo
+          <input id="loginEmail" type="email" required value="web.ecotank@demo.local">
+        </label>
+
+        <label>
+          Contrasena
+          <input id="loginPassword" type="password" required value="Prueba123">
+        </label>
+
+        <button type="submit">Entrar</button>
+      </form>
+
+      <button class="health" id="healthButton" type="button">Probar conexion MySQL</button>
+      <div class="status" id="status" role="status" aria-live="polite">Listo para probar.</div>
+    </section>
+  </main>
+
+  <script>
+    const registerTab = document.getElementById("registerTab");
+    const loginTab = document.getElementById("loginTab");
+    const registerForm = document.getElementById("registerForm");
+    const loginForm = document.getElementById("loginForm");
+    const statusBox = document.getElementById("status");
+
+    function showStatus(message, isError = false) {
+      statusBox.textContent = message;
+      statusBox.classList.toggle("error", isError);
+    }
+
+    function showRegister() {
+      registerTab.classList.add("active");
+      loginTab.classList.remove("active");
+      registerForm.classList.add("active");
+      loginForm.classList.remove("active");
+      showStatus("Listo para registrar.");
+    }
+
+    function showLogin() {
+      loginTab.classList.add("active");
+      registerTab.classList.remove("active");
+      loginForm.classList.add("active");
+      registerForm.classList.remove("active");
+      showStatus("Listo para iniciar sesion.");
+    }
+
+    async function requestJson(url, options = {}) {
+      const response = await fetch(url, {
+        headers: { "Content-Type": "application/json" },
+        ...options,
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.message || "La solicitud fallo.");
+      }
+
+      return data;
+    }
+
+    registerTab.addEventListener("click", showRegister);
+    loginTab.addEventListener("click", showLogin);
+
+    document.getElementById("healthButton").addEventListener("click", async () => {
+      showStatus("Consultando MySQL...");
+      try {
+        const data = await requestJson("/api/health");
+        showStatus(`Conexion OK. MariaDB ${data.version}. Roles: ${data.roles}. Usuarios: ${data.usuarios}.`);
+      } catch (error) {
+        showStatus(error.message, true);
+      }
+    });
+
+    registerForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      showStatus("Registrando usuario...");
+
+      try {
+        const data = await requestJson("/api/register", {
+          method: "POST",
+          body: JSON.stringify({
+            fullName: document.getElementById("registerFullName").value,
+            email: document.getElementById("registerEmail").value,
+            phone: document.getElementById("registerPhone").value,
+            password: document.getElementById("registerPassword").value,
+            role: document.getElementById("registerRole").value,
+          }),
+        });
+
+        document.getElementById("loginEmail").value = document.getElementById("registerEmail").value;
+        document.getElementById("loginPassword").value = document.getElementById("registerPassword").value;
+        showLogin();
+        showStatus(data.message);
+        window.location.href = data.redirectTo || "/interfacez.html";
+      } catch (error) {
+        showStatus(error.message, true);
+      }
+    });
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      showStatus("Validando usuario...");
+
+      try {
+        const data = await requestJson("/api/login", {
+          method: "POST",
+          body: JSON.stringify({
+            email: document.getElementById("loginEmail").value,
+            password: document.getElementById("loginPassword").value,
+          }),
+        });
+
+        showStatus(data.message);
+      } catch (error) {
+        showStatus(error.message, true);
+      }
+    });
+  </script>
+</body>
+</html>

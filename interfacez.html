@@ -53,6 +53,32 @@
             text-decoration:underline;
         }
 
+        .session-box{
+            margin-top:12px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:12px;
+            flex-wrap:wrap;
+            color:white;
+            font-size:14px;
+        }
+
+        .session-box button{
+            border:1px solid rgba(255,255,255,0.8);
+            background:transparent;
+            color:white;
+            border-radius:5px;
+            padding:7px 10px;
+            cursor:pointer;
+            font-weight:bold;
+        }
+
+        .session-box button:hover{
+            background:white;
+            color:#246b45;
+        }
+
         .hero{
             background:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80');
             background-size:cover;
@@ -193,6 +219,10 @@
         <a href="#mapa">Mapa</a>
         <a href="#reservas">Reservas</a>
         <a href="#contacto">Contacto</a>
+        <div class="session-box">
+            <span id="sessionUser">Validando sesi&oacute;n...</span>
+            <button id="logoutButton" type="button">Cerrar sesi&oacute;n</button>
+        </div>
     </nav>
 
     <!-- HERO -->
@@ -345,6 +375,30 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
+
+        async function validarSesion(){
+            try{
+                const response = await fetch('/api/me');
+                const data = await response.json();
+
+                if(!response.ok || !data.ok){
+                    window.location.href = '/';
+                    return;
+                }
+
+                document.getElementById('sessionUser').textContent =
+                    `${data.user.fullName} · ${data.user.role}`;
+            }catch(error){
+                window.location.href = '/';
+            }
+        }
+
+        document.getElementById('logoutButton').addEventListener('click', async ()=>{
+            await fetch('/api/logout', { method:'POST' });
+            window.location.href = '/';
+        });
+
+        validarSesion();
 
         // INICIALIZAR MAPA
 
